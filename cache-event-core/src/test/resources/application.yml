@@ -1,0 +1,44 @@
+spring:
+  # Rabbitmq
+  rabbitmq:
+    username: root
+    password: root
+    virtual-host: wyb
+    addresses: 11.168.3.235:5672
+    #spring.rabbitmq.connection-timeout=50000
+    #rabbitmq listetner
+    listener:
+      simple:
+        # 消费者最小数量
+        concurrency: 10
+        # 消费者最大数量
+        max-concurrency: 20
+        # 消息的确认模式
+        acknowledge-mode: MANUAL
+        # 每一次发送到消费者的消息数量，它应该大于或等于事务大小（如果使用）。
+        prefetch: 1
+        # 消费者端的重试
+        retry.enabled: true
+
+    #rabbitmq publisher
+    # 生产者端的重试
+    template:
+      retry:
+        enabled: true
+    #开启发送消息到exchange但是exchange没有和队列绑定的确认机制
+    publisher-returns: true
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write_dates_as_timestamps: false
+      # 光哥要求为空也要传过去。
+      # 经单一接口测试，全传14m，null不传则10m
+    default-property-inclusion: non_null
+  cache:
+    type: caffeine
+
+com:
+  umax:
+    cache-event:
+      push-type: SPRING_EVENT

@@ -1,0 +1,12 @@
+classes/
+/build
+buildSrc/build
+/spring-*/build
+/src/asciidoc/build
+target/
+
+# IDEA artifacts and output dirs
+*.iml
+.idea
+out
+test-output
