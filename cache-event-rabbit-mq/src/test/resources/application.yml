@@ -41,5 +41,5 @@ spring:
 com:
   umax:
     cache-event:
-#      push-type: SPRING_EVENT
-      push-type: RABBIT_MQ
+      push-type: SPRING_EVENT
+#      push-type: RABBIT_MQ
