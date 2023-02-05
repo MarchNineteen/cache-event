@@ -9,10 +9,7 @@ import com.umax.cache.event.core.listen.CacheClearEventListenerBuilder;
 import com.umax.cache.event.core.listen.spring.CacheClearSpringListenerBuilder;
 import com.umax.cache.event.core.properties.EventCacheProperties;
 import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.GenericApplicationContext;
@@ -29,25 +26,22 @@ import java.util.Map;
  * @author wangyingbo
  * @date 2023-02-03 22:08
  **/
-public class EventRegistry implements ApplicationContextAware, BeanFactoryPostProcessor {
-    protected GenericApplicationContext applicationContext;
-    protected CacheClearSpringListenerBuilder springListenerBuilder;
-    protected CacheClearEventListenerBuilder listenerBuilder;
-    protected CacheClearEventBuilder eventBuilder;
-    protected CacheClearEventFactory eventFactory;
+public class EventRegistry implements ApplicationContextAware {
+    private GenericApplicationContext applicationContext;
     @Autowired
-    protected EventCacheProperties eventCacheProperties;
+    private EventCacheProperties eventCacheProperties;
+    private SpringEventPushType pushType;
 
-    protected SpringEventPushType pushType;
-    protected List<EventCacheable> eventCacheableList = new ArrayList<>();
-    protected List<EventCacheEvict> eventCacheEvictList = new ArrayList<>();
+    private CacheClearSpringListenerBuilder springListenerBuilder;
+    private CacheClearEventListenerBuilder listenerBuilder;
+    private CacheClearEventBuilder eventBuilder;
+    private CacheClearEventFactory eventFactory;
+
+    private List<EventCacheable> eventCacheableList = new ArrayList<>();
+    private List<EventCacheEvict> eventCacheEvictList = new ArrayList<>();
 
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = (GenericApplicationContext) applicationContext;
-    }
-
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
         pushType = eventCacheProperties.getPushType();
         eventFactory = new CacheClearEventFactory(this.applicationContext, pushType);
         springListenerBuilder = new CacheClearSpringListenerBuilder(this.applicationContext, pushType);
