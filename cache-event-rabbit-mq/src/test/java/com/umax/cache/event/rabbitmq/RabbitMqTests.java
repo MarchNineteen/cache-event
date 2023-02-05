@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  * @date 2023-02-02 9:51
  **/
 @RunWith(SpringRunner.class)
-@SpringBootTest()
+@SpringBootTest
 public class RabbitMqTests {
 
     @Autowired

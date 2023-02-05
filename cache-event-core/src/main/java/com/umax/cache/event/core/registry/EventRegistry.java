@@ -29,18 +29,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2023-02-03 22:08
  **/
 public class EventRegistry implements ApplicationContextAware {
-    protected GenericApplicationContext applicationContext;
+    private GenericApplicationContext applicationContext;
     @Autowired
     private EventCacheProperties eventCacheProperties;
-    protected SpringEventPushType pushType;
+    private SpringEventPushType pushType;
 
-    protected CacheClearSpringListenerBuilder springListenerBuilder;
-    protected CacheClearEventListenerBuilder listenerBuilder;
-    protected CacheClearEventBuilder eventBuilder;
-    protected CacheClearEventFactory eventFactory;
+    private CacheClearSpringListenerBuilder springListenerBuilder;
+    private CacheClearEventListenerBuilder listenerBuilder;
+    private CacheClearEventBuilder eventBuilder;
+    private CacheClearEventFactory eventFactory;
 
-    protected List<EventCacheable> eventCacheableList = new ArrayList<>();
-    protected List<EventCacheEvict> eventCacheEvictList = new ArrayList<>();
+    private List<EventCacheable> eventCacheableList = new ArrayList<>();
+    private List<EventCacheEvict> eventCacheEvictList = new ArrayList<>();
     private final Set<Class<?>> nonAnnotatedClasses = Collections.newSetFromMap(new ConcurrentHashMap<>(64));
 
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -80,7 +80,10 @@ public class EventRegistry implements ApplicationContextAware {
 
     private void findAllAnnotation(ApplicationContext applicationContext) {
         Map<String, Object> beansWithAnnotationMap = applicationContext.getBeansWithAnnotation(Component.class);
-        beansWithAnnotationMap.values().forEach(value -> {
+        beansWithAnnotationMap
+                .values()
+                .parallelStream()
+                .forEach(value -> {
             Class<?> clazz = AopUtils.getTargetClass(value);
             Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
             for (Method method : methods) {

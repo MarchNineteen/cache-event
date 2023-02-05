@@ -1,6 +1,6 @@
 package com.umax.cache.event.core;
 
-import com.umax.cache.event.core.annotations.EnableCacheEvent;
+import com.umax.cache.event.core.annotations.EnableWebCacheEvent;
 import com.umax.cache.event.core.bean.CacheBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  **/
 
 @ComponentScan(basePackages = "com.umax.cache.event")
-@EnableCacheEvent
+@EnableWebCacheEvent
 @EnableAspectJAutoProxy
 @EnableCaching
 public class CoreSpringTests {
